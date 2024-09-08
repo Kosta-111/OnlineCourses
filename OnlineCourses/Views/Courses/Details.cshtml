@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Course details";
+}
+@model Course
+
+<img class="float-start m-3 w-25" src="@(Model.ImageUrl ?? "./images/no_image.png")" />
+
+<h1 class="text-center">@Model.Name</h1>
+
+<div class="float-end border-start p-2">
+    @if (Model.Lectures.Any())
+    {
+        <h3 class="m-3">Lectures:</h3>
+    }
+    @foreach (var i in Model.Lectures)
+    {
+        <p>@i.Number) @i.Name</p>
+    }
+</div>
+
+<p><b>Category: </b>@Model.Category</p>
+<p><b>Level: </b>@Model.Level</p>
+<p><b>Language: </b>@Model.Language</p>
+<p><b>Price: </b>@Model.Price$</p>
+<p><b>Discount: </b>@Model.Discount%</p>
+<p class="clearfix"><b>Price with discount: </b>@(Model.Price - Model.Price / 100 * Model.Discount)$</p>
+<p>
+    <b>Rating: </b>
+    @for (int j = 1; j <= 5; j++)
+    {
+        if (Model.Rating + 0.25 > j)
+        {
+            <i class="bi bi-star-fill text-warning"></i>
+        }
+        else if (Model.Rating < j - 0.75)
+        {
+            <i class="bi bi-star text-warning"></i>
+        }
+        else
+        {
+            <i class="bi bi-star-half text-warning"></i>
+        }
+    }   
+    (@Model.Rating)
+</p>
+<p><b>Certificate: </b>@(Model.IsCertificate ? "Yes" : "No")</p>
+<p><b>Description: </b>@Model.Description</p>
+
+<a asp-action="Index" class="btn btn-secondary">
+    Go back
+</a>
+

@@ -20,3 +20,17 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/*custom*/
+table.courses img {
+    transition: .4s;
+    height: 40px;
+}
+
+table.courses img:hover {
+    transform: scale(2);
+}
+
+table.courses a {
+    text-decoration: none;
+}

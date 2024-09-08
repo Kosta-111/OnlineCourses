@@ -1,0 +1,104 @@
+﻿@{
+    ViewData["Title"] = "Courses";
+}
+@model List<Course>
+
+<h1>@ViewData["Title"]</h1>
+<p>You can manage all the available online courses.</p>
+
+<table class="table table-striped courses">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Image</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Language</th>
+            <th scope="col">Price</th>
+            <th scope="col">Discount</th>
+            <th scope="col">Category</th>
+            <th scope="col">Level</th>
+            <th scope="col">Rating</th>
+            <th scope="col">Certificate</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in Model)
+        {
+            <tr class="align-middle">
+                <th scope="row">@i.Id</th>
+                <td class="text-center">
+                    <img class="rounded-1 mx-auto" src="@(i.ImageUrl ?? "./images/no_image.png")" />
+                </td>
+                <td>
+                    <span>@i.Name</span>
+                    @if (i.Rating > 4.5)
+                    {
+                        <span class="badge bg-primary">Bestseller</span>
+                    }
+                </td>
+                <td>
+                    @if (i.Description?.Length > 36)
+                    {
+                        @(i.Description.Substring(0, 36) + " ...")
+                    }
+                    else
+                    {
+                        <span>@i.Description</span>
+                    }
+                </td>
+                <td>@i.Language</td>
+                <td>
+                    @if (i.Discount > 0)
+                    {
+                        <del>@i.Price</del><br />
+                        <span>@(i.Price - i.Price / 100 * i.Discount)$</span>
+                    }
+                    else
+                    {
+                        <span>@i.Price$</span>
+                    }
+                </td>
+                <td>@i.Discount%</td>
+                <td>@i.Category</td>
+                <td>@i.Level</td>
+                <td class="text-nowrap">
+                    @for (int j = 1; j <= 5; j++)
+                    {
+                        if (i.Rating + 0.25 > j)
+                        {
+                            <i class="bi bi-star-fill text-warning"></i>
+                        }
+                        else if (i.Rating < j - 0.75)
+                        {
+                            <i class="bi bi-star text-warning"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-star-half text-warning"></i>
+                        }
+                    }
+                </td>
+                <td class="text-center">
+                    @if (i.IsCertificate)
+                    {
+                        <i class="bi bi-check-circle-fill text-success fs-4"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-dash-circle-fill text-danger fs-4"></i>
+                    }
+                </td>
+                <td class="text-nowrap">
+                    <a asp-action="Details" asp-route-id="@i.Id">
+                        <i class="bi bi-info-square-fill text-primary fs-5 px-1"></i>
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@i.Id">
+                        <i class="bi bi-trash-fill text-danger fs-5 px-1"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
