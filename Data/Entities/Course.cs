@@ -16,12 +16,12 @@ public class Course : IEntity
     public ICollection<Student> Students { get; set; } = [];
 
     public int LevelId { get; set; }
-    public Level Level { get; set; }
+    public Level? Level { get; set; }
     public int CategoryId { get; set; }
-    public Category Category { get; set; }
+    public Category? Category { get; set; }
 
     public override string ToString()
     {
-        return $"{Name} ({Category.Name})";
+        return $"{Name} ({Category?.Name})";
     }
 }

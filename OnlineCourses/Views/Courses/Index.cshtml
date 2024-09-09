@@ -6,6 +6,8 @@
 <h1>@ViewData["Title"]</h1>
 <p>You can manage all the available online courses.</p>
 
+<a asp-action="Create" class="btn btn-success mb-2">Create New Course</a>
+
 <table class="table table-striped courses">
     <thead>
         <tr>
@@ -33,7 +35,7 @@
                 </td>
                 <td>
                     <span>@i.Name</span>
-                    @if (i.Rating > 4.5)
+                    @if (i.Rating >= 4.5)
                     {
                         <span class="badge bg-primary">Bestseller</span>
                     }
@@ -83,11 +85,11 @@
                 <td class="text-center">
                     @if (i.IsCertificate)
                     {
-                        <i class="bi bi-check-circle-fill text-success fs-4"></i>
+                        <i class="bi bi-file-earmark-check-fill text-success fs-4"></i>
                     }
                     else
                     {
-                        <i class="bi bi-dash-circle-fill text-danger fs-4"></i>
+                        <i class="bi bi-file-earmark-excel-fill text-danger fs-4"></i>
                     }
                 </td>
                 <td class="text-nowrap">

@@ -8,7 +8,7 @@ public class Material : IEntity
     public int? Duration { get; set; }
 
     public int LectureId { get; set; }
-    public Lecture Lecture { get; set; }
+    public Lecture? Lecture { get; set; }
 
     public override string ToString()
     {

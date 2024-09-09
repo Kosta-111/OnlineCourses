@@ -1,5 +1,7 @@
 ﻿using Data;
+using Data.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace OnlineCourses.Controllers;
@@ -16,6 +18,34 @@ public class CoursesController : Controller
             .ToList();
 
         return View(courses);
+    }
+
+    private void LoadCategoriesAndLevels()
+    {
+        ViewBag.Categories = new SelectList(context.Categories.ToList(), "Id", "Name");
+        ViewBag.Levels = new SelectList(context.Levels.ToList(), "Id", "Name");
+    }
+
+    [HttpGet]
+    public IActionResult Create()
+    {
+        LoadCategoriesAndLevels();
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult Create(Course model)
+    {
+        if (!ModelState.IsValid)
+        {
+            LoadCategoriesAndLevels();
+            return View(model);
+        }
+
+        context.Courses.Add(model);
+        context.SaveChanges();
+
+        return RedirectToAction("Index");
     }
 
     public IActionResult Delete(int id)

@@ -11,10 +11,10 @@ public class Lecture : IEntity
     public ICollection<Material> Materials { get; set; } = [];
 
     public int CourseId { get; set; }
-    public Course Course { get; set; }
+    public Course? Course { get; set; }
 
     public override string ToString()
     {
-        return $"{Name} ({Course.Name})";
+        return $"{Name} ({Course?.Name})";
     }
 }

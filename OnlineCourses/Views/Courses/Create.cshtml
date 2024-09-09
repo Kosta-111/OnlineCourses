@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Create Course";
+}
+@model Course
+
+<h1>Create New Course</h1>
+
+<form class="row g-3" method="post" asp-action="Create">
+    <div class="col-md-12">
+        <label asp-for="Name" class="form-label">Name</label>
+        <input asp-for="Name" required type="text" class="form-control" placeholder="Enter course name">
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="Price" class="form-label">Price</label>
+        <input asp-for="Price" min="0" step="0.01" type="number" class="form-control" placeholder="Enter price">
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Discount" class="form-label">Discount</label>
+        <input asp-for="Discount" min="0" max="100" type="number" class="form-control" placeholder="Enter discount">
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Rating" class="form-label">Rating</label>
+        <input asp-for="Rating" min="0" max="5" step="0.1" type="number" class="form-control" placeholder="Enter course rating">
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="Language" class="form-label">Language</label>
+        <input asp-for="Language" required type="text" class="form-control" placeholder="Enter course language">
+    </div>
+    <div class="col-md-4">
+        <label asp-for="CategoryId" class="form-label">Category</label>
+        <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-select">
+            <option disabled selected>Choose category...</option>
+        </select>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="LevelId" class="form-label">Level</label>
+        <select asp-for="LevelId" asp-items="ViewBag.Levels" class="form-select">
+            <option disabled selected>Choose level...</option>
+        </select>
+    </div>
+
+    <div class="col-md-12">
+        <label asp-for="ImageUrl" class="form-label">Image URL</label>
+        <input asp-for="ImageUrl" type="url" class="form-control" placeholder="Enter course image url">
+    </div>
+
+    <div class="col-12">
+        <label asp-for="Description" class="form-label">Description</label>
+        <textarea asp-for="Description" class="form-control" rows="3" placeholder="Enter description"></textarea>
+    </div>
+
+    <div class="col-md-12">
+        <input asp-for="IsCertificate" type="checkbox" class="form-check-input mt-1">
+        <label asp-for="IsCertificate" class="form-label">Is issued certificate</label>
+    </div>
+
+    <div class="col-6">
+        <a asp-action="Index" type="button" class="btn btn-dark w-100">Back</a>
+    </div>
+    <div class="col-6">
+        <button type="submit" class="btn btn-primary w-100">Create</button>
+    </div>
+</form>
