@@ -1,14 +1,23 @@
-﻿using Data;
+﻿using AutoMapper;
+using Data;
 using Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using OnlineCourses.Models;
 
 namespace OnlineCourses.Controllers;
 
 public class CoursesController : Controller
 {
     private OnlineCoursesDbContext context = new();
+    private readonly IMapper mapper;
+
+    public CoursesController(IMapper mapper)
+    {
+        this.mapper = mapper;
+    }
+
     public IActionResult Index()
     {
         // load courses from db
@@ -34,7 +43,7 @@ public class CoursesController : Controller
     }
 
     [HttpPost]
-    public IActionResult Create(Course model)
+    public IActionResult Create(CreateCourseModel model)
     {
         if (!ModelState.IsValid)
         {
@@ -42,7 +51,35 @@ public class CoursesController : Controller
             return View(model);
         }
 
-        context.Courses.Add(model);
+        var entity = mapper.Map<Course>(model);
+        context.Courses.Add(entity);
+        context.SaveChanges();
+
+        return RedirectToAction("Index");
+    }
+
+    [HttpGet]
+    public IActionResult Edit(int id)
+    {
+        var course = context.Courses.Find(id);
+        if (course is null) return NotFound();
+
+        LoadCategoriesAndLevels();
+        var model = mapper.Map<EditCourseModel>(course);
+        return View(model);
+    }
+
+    [HttpPost]
+    public IActionResult Edit(EditCourseModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            LoadCategoriesAndLevels();
+            return View(model);
+        }
+
+        var entity = mapper.Map<Course>(model);
+        context.Courses.Update(entity);
         context.SaveChanges();
 
         return RedirectToAction("Index");
@@ -51,7 +88,7 @@ public class CoursesController : Controller
     public IActionResult Delete(int id)
     {
         var course = context.Courses.Find(id);
-        if (course == null) return NotFound();
+        if (course is null) return NotFound();
 
         context.Courses.Remove(course);
         context.SaveChanges();
@@ -62,13 +99,13 @@ public class CoursesController : Controller
     public IActionResult Details(int id)
     {
         var course = context.Courses
-            .Where(x => x.Id == id)
             .Include(x => x.Category)
             .Include(x => x.Level)
             .Include(x => x.Lectures)
-            .FirstOrDefault();
+            .Where(x => x.Id == id)
+            .FirstOrDefault();            
 
-        if (course == null) return NotFound();
+        if (course is null) return NotFound();
 
         course.Lectures = course.Lectures.OrderBy(x => x.Number).ToList();
         return View(course);

@@ -1,11 +1,11 @@
 ﻿@{
-    ViewData["Title"] = "Create Course";
+    ViewData["Title"] = "Edit Course";
 }
-@model CreateCourseModel
+@model EditCourseModel
 
-<h1>Create New Course</h1>
+<h1>Edit Course</h1>
 
-<form class="row g-3" method="post" asp-action="Create">
+<form class="row g-3" method="post" asp-action="Edit">
     <div class="col-md-12">
         <label asp-for="Name" class="form-label">Name</label>
         <input asp-for="Name" type="text" class="form-control" placeholder="Enter course name">
@@ -19,12 +19,12 @@
     </div>
     <div class="col-md-4">
         <label asp-for="Discount" class="form-label">Discount</label>
-        <input asp-for="Discount" value="0" type="number" class="form-control" placeholder="Enter discount">
+        <input asp-for="Discount" type="number" class="form-control" placeholder="Enter discount">
         <span asp-validation-for=Discount class="form-text text-danger"></span>
     </div>
     <div class="col-md-4">
         <label asp-for="Rating" class="form-label">Rating</label>
-        <input asp-for="Rating" step="0.1" value="0" type="number" class="form-control" placeholder="Enter course rating">
+        <input asp-for="Rating" step="0.1" type="number" class="form-control" placeholder="Enter course rating">
         <span asp-validation-for=Rating class="form-text text-danger"></span>
     </div>
 
@@ -69,6 +69,6 @@
         <a asp-action="Index" type="button" class="btn btn-dark w-100">Back</a>
     </div>
     <div class="col-6">
-        <button type="submit" class="btn btn-primary w-100">Create</button>
+        <button type="submit" class="btn btn-primary w-100">Edit</button>
     </div>
 </form>
