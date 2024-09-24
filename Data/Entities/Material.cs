@@ -9,9 +9,4 @@ public class Material : IEntity
 
     public int LectureId { get; set; }
     public Lecture? Lecture { get; set; }
-
-    public override string ToString()
-    {
-        return Name;
-    }
 }

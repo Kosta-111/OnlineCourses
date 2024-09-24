@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Courses";
 }
-@model List<Course>
+@model List<CourseModel>
 
 <h1>@ViewData["Title"]</h1>
 <p>You can manage all the available online courses.</p>
@@ -31,7 +31,7 @@
             <tr class="align-middle">
                 <th scope="row">@i.Id</th>
                 <td class="text-center">
-                    <img class="rounded-1 mx-auto" src="@(i.ImageUrl ?? "./images/no_image.png")" />
+                    <img class="rounded-1 mx-auto" src="@(i.ImageUrl ?? "/images/no_image.png")" />
                 </td>
                 <td>
                     <span>@i.Name</span>
@@ -63,8 +63,8 @@
                     }
                 </td>
                 <td>@i.Discount%</td>
-                <td>@i.Category</td>
-                <td>@i.Level</td>
+                <td>@i.CategoryName</td>
+                <td>@i.LevelName</td>
                 <td class="text-nowrap">
                     @for (int j = 1; j <= 5; j++)
                     {

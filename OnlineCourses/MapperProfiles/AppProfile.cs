@@ -8,8 +8,14 @@ public class AppProfile : Profile
 {
     public AppProfile()
     {
-        CreateMap<CreateCourseModel, Course>();
-        CreateMap<EditCourseModel, Course>();
-        CreateMap<Course, EditCourseModel>();
+        //course
+        CreateMap<CourseModelCreate, Course>();
+        CreateMap<CourseModelEdit, Course>();
+        CreateMap<Course, CourseModelEdit>();
+        CreateMap<Course, CourseModel>();
+        CreateMap<Course, CourseModelDetailed>();
+
+        //lecture
+        CreateMap<Lecture, LectureModel>();
     }
 }

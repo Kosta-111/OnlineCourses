@@ -2,13 +2,12 @@
 
 namespace OnlineCourses.Models;
 
-public class CreateCourseModel
+public class CourseModelCreate
 {
     [Required, MinLength(2), MaxLength(50)]
     public string Name { get; set; } = null!;
 
-    [Url, MaxLength(1024)]
-    public string? ImageUrl { get; set; }
+    public IFormFile? Image { get; set; }
 
     [MaxLength(2000)]
     public string? Description { get; set; }

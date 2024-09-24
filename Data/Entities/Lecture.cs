@@ -12,9 +12,4 @@ public class Lecture : IEntity
 
     public int CourseId { get; set; }
     public Course? Course { get; set; }
-
-    public override string ToString()
-    {
-        return $"{Name} ({Course?.Name})";
-    }
 }

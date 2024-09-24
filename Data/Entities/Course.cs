@@ -19,9 +19,4 @@ public class Course : IEntity
     public Level? Level { get; set; }
     public int CategoryId { get; set; }
     public Category? Category { get; set; }
-
-    public override string ToString()
-    {
-        return $"{Name} ({Category?.Name})";
-    }
 }

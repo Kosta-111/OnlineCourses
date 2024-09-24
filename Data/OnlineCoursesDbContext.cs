@@ -6,12 +6,8 @@ namespace Data;
 
 public class OnlineCoursesDbContext : DbContext
 {
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        base.OnConfiguring(optionsBuilder);
-        string connStr = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=OnlineCourses;Integrated Security=True;Connect Timeout=30;Trust Server Certificate=True";
-        optionsBuilder.UseSqlServer(connStr);
-    }
+    public OnlineCoursesDbContext() { }
+    public OnlineCoursesDbContext(DbContextOptions options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

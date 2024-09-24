@@ -12,9 +12,4 @@ public class Student : IEntity
     public DateOnly? BirthDate { get; set; }
 
     public ICollection<Course> Courses { get; set; } = [];
-
-    public override string ToString()
-    {
-        return $"{FirstName} {LastName} ({Country})";
-    }
 }

@@ -1,22 +1,22 @@
-﻿using AutoMapper;
-using Data;
+﻿using Data;
+using AutoMapper;
 using Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OnlineCourses.Models;
+using OnlineCourses.Services;
 
 namespace OnlineCourses.Controllers;
 
-public class CoursesController : Controller
+public class CoursesController(
+    IMapper mapper, 
+    IFilesService filesService, 
+    OnlineCoursesDbContext context) : Controller
 {
-    private OnlineCoursesDbContext context = new();
-    private readonly IMapper mapper;
-
-    public CoursesController(IMapper mapper)
-    {
-        this.mapper = mapper;
-    }
+    private readonly IMapper mapper = mapper;
+    private readonly OnlineCoursesDbContext context = context;
+    private readonly IFilesService filesService = filesService;
 
     public IActionResult Index()
     {
@@ -26,7 +26,8 @@ public class CoursesController : Controller
             .Include(x => x.Level)
             .ToList();
 
-        return View(courses);
+        var model = mapper.Map<List<CourseModel>>(courses);
+        return View(model);
     }
 
     private void LoadCategoriesAndLevels()
@@ -43,7 +44,7 @@ public class CoursesController : Controller
     }
 
     [HttpPost]
-    public IActionResult Create(CreateCourseModel model)
+    public async Task<IActionResult> Create(CourseModelCreate model)
     {
         if (!ModelState.IsValid)
         {
@@ -52,6 +53,11 @@ public class CoursesController : Controller
         }
 
         var entity = mapper.Map<Course>(model);
+
+        // save file to server
+        if (model.Image is not null)
+            entity.ImageUrl = await filesService.SaveImage(model.Image);
+
         context.Courses.Add(entity);
         context.SaveChanges();
 
@@ -61,16 +67,16 @@ public class CoursesController : Controller
     [HttpGet]
     public IActionResult Edit(int id)
     {
-        var course = context.Courses.Find(id);
-        if (course is null) return NotFound();
+        var entity = context.Courses.Find(id);
+        if (entity is null) return NotFound();
 
         LoadCategoriesAndLevels();
-        var model = mapper.Map<EditCourseModel>(course);
+        var model = mapper.Map<CourseModelEdit>(entity);
         return View(model);
     }
 
     [HttpPost]
-    public IActionResult Edit(EditCourseModel model)
+    public async Task<IActionResult> Edit(CourseModelEdit model)
     {
         if (!ModelState.IsValid)
         {
@@ -79,35 +85,43 @@ public class CoursesController : Controller
         }
 
         var entity = mapper.Map<Course>(model);
+
+        // rewrite file on server
+        if (model.Image is not null)
+            entity.ImageUrl = await filesService.EditImage(model.Image, entity.ImageUrl);
+
         context.Courses.Update(entity);
         context.SaveChanges();
 
         return RedirectToAction("Index");
     }
 
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        var course = context.Courses.Find(id);
-        if (course is null) return NotFound();
+        var entity = context.Courses.Find(id);
+        if (entity is null) return NotFound();
 
-        context.Courses.Remove(course);
+        context.Courses.Remove(entity);
         context.SaveChanges();
+
+        if (entity.ImageUrl is not null)
+            await filesService.DeleteImage(entity.ImageUrl);
 
         return RedirectToAction("Index");
     }
 
     public IActionResult Details(int id)
     {
-        var course = context.Courses
+        var entity = context.Courses
             .Include(x => x.Category)
             .Include(x => x.Level)
-            .Include(x => x.Lectures)
+            .Include(x => x.Lectures.OrderBy(x => x.Number))
             .Where(x => x.Id == id)
             .FirstOrDefault();            
 
-        if (course is null) return NotFound();
+        if (entity is null) return NotFound();
 
-        course.Lectures = course.Lectures.OrderBy(x => x.Number).ToList();
-        return View(course);
+        var model = mapper.Map<CourseModelDetailed>(entity);
+        return View(model);
     }
 }

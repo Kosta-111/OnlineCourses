@@ -1,9 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Course details";
 }
-@model Course
+@model CourseModelDetailed
 
-<img class="float-start m-3 w-25" src="@(Model.ImageUrl ?? "./images/no_image.png")" />
+<img class="float-start m-3 w-25" src="@(Model.ImageUrl ?? "/images/no_image.png")" />
 
 <h1 class="text-center">@Model.Name</h1>
 
@@ -18,8 +18,8 @@
     }
 </div>
 
-<p><b>Category: </b>@Model.Category</p>
-<p><b>Level: </b>@Model.Level</p>
+<p><b>Category: </b>@Model.CategoryName</p>
+<p><b>Level: </b>@Model.LevelName</p>
 <p><b>Language: </b>@Model.Language</p>
 <p><b>Price: </b>@Model.Price$</p>
 <p><b>Discount: </b>@Model.Discount%</p>
