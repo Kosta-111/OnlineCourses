@@ -1,10 +1,11 @@
 ﻿using Data.Entities;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Data;
 
-public class OnlineCoursesDbContext : DbContext
+public class OnlineCoursesDbContext : IdentityDbContext<User>
 {
     public OnlineCoursesDbContext() { }
     public OnlineCoursesDbContext(DbContextOptions options) : base(options) { }

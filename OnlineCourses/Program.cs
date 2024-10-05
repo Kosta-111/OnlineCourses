@@ -1,4 +1,5 @@
 using Data;
+using Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using OnlineCourses.MapperProfiles;
 using OnlineCourses.Services;
@@ -12,6 +13,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<OnlineCoursesDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<User>(options => 
+    options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<OnlineCoursesDbContext>();
 
 builder.Services.AddAutoMapper(typeof(AppProfile));
 builder.Services.AddScoped<IFilesService, FilesService>();
@@ -44,6 +49,7 @@ app.UseAuthorization();
 
 app.UseSession();
 
+app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
