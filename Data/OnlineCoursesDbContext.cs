@@ -23,4 +23,5 @@ public class OnlineCoursesDbContext : IdentityDbContext<User>
     public DbSet<Level> Levels { get; set; }
     public DbSet<Material> Materials { get; set; }
     public DbSet<Student> Students { get; set; }
+    public DbSet<Order> Orders { get; set; }
 }

@@ -2,8 +2,8 @@ using Data;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using OnlineCourses.Models;
 using System.Diagnostics;
+using Core.Models;
 
 namespace OnlineCourses.Controllers;
 

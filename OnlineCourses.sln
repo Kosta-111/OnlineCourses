@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35219.272
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineCourses", "OnlineCourses\OnlineCourses.csproj", "{F4F8EC07-A8E5-40A0-9C16-30AE32B9FB79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineCourses", "OnlineCourses\OnlineCourses.csproj", "{F4F8EC07-A8E5-40A0-9C16-30AE32B9FB79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{037DFFDC-3450-4F26-B8C5-633D4A226CC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{037DFFDC-3450-4F26-B8C5-633D4A226CC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{84187F3D-15C1-4B8D-B4D2-CF93573276AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{037DFFDC-3450-4F26-B8C5-633D4A226CC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{037DFFDC-3450-4F26-B8C5-633D4A226CC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{037DFFDC-3450-4F26-B8C5-633D4A226CC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84187F3D-15C1-4B8D-B4D2-CF93573276AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84187F3D-15C1-4B8D-B4D2-CF93573276AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84187F3D-15C1-4B8D-B4D2-CF93573276AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84187F3D-15C1-4B8D-B4D2-CF93573276AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

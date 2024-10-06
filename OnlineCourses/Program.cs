@@ -1,7 +1,8 @@
 using Data;
 using Data.Entities;
+using Core.Services;
+using Core.MapperProfiles;
 using Microsoft.EntityFrameworkCore;
-using OnlineCourses.MapperProfiles;
 using OnlineCourses.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,8 +21,12 @@ builder.Services.AddDefaultIdentity<User>(options =>
 
 builder.Services.AddAutoMapper(typeof(AppProfile));
 builder.Services.AddScoped<IFilesService, FilesService>();
+builder.Services.AddScoped<IWishListService, WishListService>();
 
 builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddHttpContextAccessor();
+
 // -------- sessions
 builder.Services.AddSession(options =>
 {

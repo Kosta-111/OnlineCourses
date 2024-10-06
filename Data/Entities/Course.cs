@@ -14,6 +14,7 @@ public class Course : IEntity
 
     public ICollection<Lecture> Lectures { get; set; } = [];
     public ICollection<Student> Students { get; set; } = [];
+    public ICollection<Order> Orders { get; set; } = [];
 
     public int LevelId { get; set; }
     public Level? Level { get; set; }

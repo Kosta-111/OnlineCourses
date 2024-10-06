@@ -1,4 +1,6 @@
-﻿namespace OnlineCourses.Services;
+﻿using Core.Services;
+
+namespace OnlineCourses.Services;
 
 public class FilesService(IWebHostEnvironment env) : IFilesService
 {
@@ -16,7 +18,7 @@ public class FilesService(IWebHostEnvironment env) : IFilesService
         // save file content
         using var fs = new FileStream(fullPath, FileMode.Create);
         await file.CopyToAsync(fs);
-        return relativePath;
+        return Path.DirectorySeparatorChar + relativePath;
     }
 
     public async Task<string> EditImage(IFormFile newFile, string? oldPath)
@@ -29,7 +31,7 @@ public class FilesService(IWebHostEnvironment env) : IFilesService
 
     public Task DeleteImage(string path)
     {
-        string fullPath = Path.Combine(env.WebRootPath, path);
+        string fullPath = env.WebRootPath + path;
 
         return File.Exists(fullPath)
             ? Task.Run(() => File.Delete(fullPath))

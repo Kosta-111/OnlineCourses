@@ -4,8 +4,8 @@ using Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using OnlineCourses.Models;
-using OnlineCourses.Services;
+using Core.Services;
+using Core.Models;
 
 namespace OnlineCourses.Controllers;
 

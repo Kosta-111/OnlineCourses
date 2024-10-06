@@ -1,4 +1,4 @@
-﻿namespace OnlineCourses.Models;
+﻿namespace Core.Models;
 
 public class LectureModel
 {

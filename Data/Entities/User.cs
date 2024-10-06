@@ -8,4 +8,5 @@ public class User : IdentityUser
     public DateTime? BirthDate { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
+    public ICollection<Order> Orders { get; set; } = [];
 }

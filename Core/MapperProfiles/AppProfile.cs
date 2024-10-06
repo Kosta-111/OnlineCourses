@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Core.Models;
 using Data.Entities;
-using OnlineCourses.Models;
 
-namespace OnlineCourses.MapperProfiles;
+namespace Core.MapperProfiles;
 
 public class AppProfile : Profile
 {

@@ -1,4 +1,6 @@
-﻿namespace OnlineCourses.Services;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Core.Services;
 
 public interface IFilesService
 {

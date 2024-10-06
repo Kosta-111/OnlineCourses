@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Orders";
+}
+@model List<Order>
+
+<h1>My Orders</h1>
+
+<ul class="list-group">
+    @foreach (var o in Model)
+    {
+        <li class="list-group-item">[@o.Id] - @o.CreationDate.ToString("dd.MM.yyyy HH:mm") - Count: @o.Courses?.Count            
+            @foreach (var c in o.Courses ?? [])
+            {
+                <br />
+                <i class="mx-3">@c.Name</i>
+            }           
+        </li>
+    }
+</ul>
