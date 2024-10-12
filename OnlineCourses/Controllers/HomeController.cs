@@ -1,28 +1,15 @@
-using Data;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using Core.Models;
+using Core.Services;
 
 namespace OnlineCourses.Controllers;
 
-public class HomeController(IMapper mapper, OnlineCoursesDbContext context) : Controller
+public class HomeController(ICoursesService coursesService) : Controller
 {
-    private readonly IMapper mapper = mapper;
-    private readonly OnlineCoursesDbContext context = context;
-
     public IActionResult Index()
     {
-        // ... working with db ...
-        var courses = context.Courses
-            .Include(x => x.Category)
-            .Include(x => x.Level)
-            .ToList();
-
-        // ~/Home/Index.cshtml
-        var model = mapper.Map<IEnumerable<CourseModel>>(courses);
-        return View(model);
+        return View(coursesService.GetCourseModels());
     }
 
     public IActionResult About()

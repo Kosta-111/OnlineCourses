@@ -1,41 +1,20 @@
-﻿using Data;
-using AutoMapper;
-using Data.Entities;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Core.Services;
 using Core.Models;
+using Microsoft.AspNetCore.Authorization;
+using OnlineCourses.Extensions;
 
 namespace OnlineCourses.Controllers;
 
-public class CoursesController(
-    IMapper mapper, 
-    IFilesService filesService, 
-    OnlineCoursesDbContext context) : Controller
+public class CoursesController(ICoursesService coursesService) : Controller
 {
-    private readonly IMapper mapper = mapper;
-    private readonly OnlineCoursesDbContext context = context;
-    private readonly IFilesService filesService = filesService;
-
     public IActionResult Index()
     {
-        // load courses from db
-        var courses = context.Courses
-            .Include(x => x.Category)
-            .Include(x => x.Level)
-            .ToList();
-
-        var model = mapper.Map<List<CourseModel>>(courses);
-        return View(model);
+        return View(coursesService.GetCourseModels());
     }
 
-    private void LoadCategoriesAndLevels()
-    {
-        ViewBag.Categories = new SelectList(context.Categories.ToList(), "Id", "Name");
-        ViewBag.Levels = new SelectList(context.Levels.ToList(), "Id", "Name");
-    }
-
+    [Authorize(Roles = Roles.ADMIN)]
     [HttpGet]
     public IActionResult Create()
     {
@@ -43,6 +22,7 @@ public class CoursesController(
         return View();
     }
 
+    [Authorize(Roles = Roles.ADMIN)]
     [HttpPost]
     public async Task<IActionResult> Create(CourseModelCreate model)
     {
@@ -51,30 +31,22 @@ public class CoursesController(
             LoadCategoriesAndLevels();
             return View(model);
         }
-
-        var entity = mapper.Map<Course>(model);
-
-        // save file to server
-        if (model.Image is not null)
-            entity.ImageUrl = await filesService.SaveImage(model.Image);
-
-        context.Courses.Add(entity);
-        context.SaveChanges();
-
+        await coursesService.Create(model);
         return RedirectToAction("Index");
     }
 
+    [Authorize(Roles = Roles.ADMIN)]
     [HttpGet]
     public IActionResult Edit(int id)
     {
-        var entity = context.Courses.Find(id);
-        if (entity is null) return NotFound();
+        var model = coursesService.GetModelEdit(id);
+        if (model is null) return NotFound();
 
         LoadCategoriesAndLevels();
-        var model = mapper.Map<CourseModelEdit>(entity);
         return View(model);
     }
 
+    [Authorize(Roles = Roles.ADMIN)]
     [HttpPost]
     public async Task<IActionResult> Edit(CourseModelEdit model)
     {
@@ -83,45 +55,30 @@ public class CoursesController(
             LoadCategoriesAndLevels();
             return View(model);
         }
-
-        var entity = mapper.Map<Course>(model);
-
-        // rewrite file on server
-        if (model.Image is not null)
-            entity.ImageUrl = await filesService.EditImage(model.Image, entity.ImageUrl);
-
-        context.Courses.Update(entity);
-        context.SaveChanges();
-
+        await coursesService.Edit(model);
         return RedirectToAction("Index");
     }
 
+    [Authorize(Roles = Roles.ADMIN)]
     public async Task<IActionResult> Delete(int id)
     {
-        var entity = context.Courses.Find(id);
-        if (entity is null) return NotFound();
-
-        context.Courses.Remove(entity);
-        context.SaveChanges();
-
-        if (entity.ImageUrl is not null)
-            await filesService.DeleteImage(entity.ImageUrl);
-
-        return RedirectToAction("Index");
+        return await coursesService.Delete(id)
+            ? RedirectToAction("Index")
+            : NotFound();
     }
 
     public IActionResult Details(int id)
     {
-        var entity = context.Courses
-            .Include(x => x.Category)
-            .Include(x => x.Level)
-            .Include(x => x.Lectures.OrderBy(x => x.Number))
-            .Where(x => x.Id == id)
-            .FirstOrDefault();            
+        var model = coursesService.GetModelDetailed(id);
 
-        if (entity is null) return NotFound();
+        return model is not null
+            ? View(model)
+            : NotFound();
+    }
 
-        var model = mapper.Map<CourseModelDetailed>(entity);
-        return View(model);
+    private void LoadCategoriesAndLevels()
+    {
+        ViewBag.Categories = new SelectList(coursesService.Categories, "Id", "Name");
+        ViewBag.Levels = new SelectList(coursesService.Levels, "Id", "Name");
     }
 }

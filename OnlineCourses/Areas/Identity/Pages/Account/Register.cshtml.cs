@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using OnlineCourses.Extensions;
 
 namespace OnlineCourses.Areas.Identity.Pages.Account;
 
@@ -104,6 +105,9 @@ public class RegisterModel : PageModel
         [DataType(DataType.Date)]
         [Display(Name = "Birthdate")]
         public DateTime BirthDate { get; set; }
+
+        [Display(Name = "Admin")]
+        public bool IsAdmin { get; set; }
     }
 
 
@@ -134,6 +138,12 @@ public class RegisterModel : PageModel
             if (result.Succeeded)
             {
                 _logger.LogInformation("User created a new account with password.");
+
+                //set role
+                if (Input.IsAdmin && User.IsInRole(Roles.ADMIN))
+                    await _userManager.AddToRoleAsync(user, Roles.ADMIN);
+                else
+                    await _userManager.AddToRoleAsync(user, Roles.USER);
 
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

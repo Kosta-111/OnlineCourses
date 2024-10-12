@@ -38,10 +38,19 @@
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.BirthDate" class="form-control" autocomplete="birthdate" aria-required="true" />
+                <input asp-for="Input.BirthDate" class="form-control" aria-required="true" />
                 <label asp-for="Input.BirthDate">Birthdate</label>
                 <span asp-validation-for="Input.BirthDate" class="text-danger"></span>
             </div>
+            @if (User.IsInRole(Roles.ADMIN))
+            {
+                <div class="checkbox mb-3">
+                    <label asp-for="Input.IsAdmin" class="form-label">
+                        <input class="form-check-input" asp-for="Input.IsAdmin" />
+                        @Html.DisplayNameFor(m => m.Input.IsAdmin)
+                    </label>
+                </div>
+            }
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>
