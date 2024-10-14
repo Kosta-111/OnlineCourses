@@ -10,7 +10,7 @@ public class OrdersService(
     ) : IOrdersService
 {
     private readonly OnlineCoursesDbContext context = context;
-    public void Add(string? userId)
+    public void AddAll(string? userId)
     {
         var order = new Order
         {
@@ -20,6 +20,22 @@ public class OrdersService(
         };
         context.Orders.Add(order);
         context.SaveChanges();
+    }
+
+    public bool Add(string? userId, int courseId)
+    {
+        var course = context.Courses.Find(courseId);
+        if (course is null) return false;
+
+        var order = new Order
+        {
+            CreationDate = DateTime.Now,
+            UserId = userId!,
+            Courses = [ course ]
+        };
+        context.Orders.Add(order);
+        context.SaveChanges();
+        return true;
     }
 
     public List<Order> GetOrders(string? userId)

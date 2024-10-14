@@ -40,12 +40,15 @@
                             <a asp-action="Remove" asp-route-id="@i.Id">
                                 <i class="bi bi-trash-fill text-danger fs-5 px-1"></i>
                             </a>
+                            <a asp-controller="Orders" asp-action="Add" asp-route-id="@i.Id">
+                                <span class="badge bg-success rounded-pill">Order<i class="bi bi-cart-check fs-6 px-1"></i></span>
+                            </a>
                         </span>
                     </li>
                 }
             </ol>
             <div>
-                <a asp-controller="Orders" asp-action="Add" class="btn btn-success m-2">Confirm</a>
+                <a asp-controller="Orders" asp-action="AddAll" class="btn btn-success m-2">Order All</a>
                 <a asp-action="Clear" class="btn btn-danger m-2">Clear All</a>
             </div>
             <div>

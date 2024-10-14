@@ -15,9 +15,16 @@ public class OrdersController(IOrdersService ordersService) : Controller
         return View(ordersService.GetOrders(CurrentUserId));
     }
 
-    public IActionResult Add()
+    public IActionResult Add(int id)
     {
-        ordersService.Add(CurrentUserId);
+        return ordersService.Add(CurrentUserId, id)
+            ? RedirectToAction("Index")
+            : NotFound();
+    }
+
+    public IActionResult AddAll()
+    {
+        ordersService.AddAll(CurrentUserId);
         return RedirectToAction("Index");
     }
 }
